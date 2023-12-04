@@ -1,1 +1,0 @@
-blender --python SolarEclipseVisualisator.py
