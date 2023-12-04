@@ -1,0 +1,10 @@
+ \begindata
+ KERNELS_TO_LOAD = (
+ 'earth_200101_990825_predict.bpc',
+ 'earth_000101_231116_230823.bpc',
+ 'pck00011.tpc',
+ 'naif0012.tls',
+ 'de440s.bsp',
+ 'gm_de431.tpc'
+ ) 
+\begintext
