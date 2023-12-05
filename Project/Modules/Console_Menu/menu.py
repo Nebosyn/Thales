@@ -4,13 +4,13 @@ import datetime
 from ..Eclispe_Calculations import eclipseFinder,City_EclipseChecker
 from ..Constants.constants import  scaleCoff
 from ..Tools.tools import inputControl
-
 def create_UI(eclipses_list):
     eclipses_dictionary = {}
     print("""
 1.All eclipses
 2.Eclipses for desired city/cities
-3.Manual date input """)
+3.Manual date input 
+0.Exit Thales""")
     while True:
         programMode = inputControl(input("Select program mode: "),3)
         if programMode != None:
@@ -29,12 +29,17 @@ def create_UI(eclipses_list):
         while output[1] == 0:
             output = centuriesMenu(eclipses_dictionary)
         return output
-    elif programMode == 2:
-        userInput = input("Enter city/cities separated by commas: ")
-        try:
-            citiesList = userInput.split(",")
-        except:
-            sys.exit("Error occured")
+    # elif programMode == 2:
+    #     while True:
+    #         try:
+    #             citiesList = inputControl(input("Enter city/cities separated by commas: ").split(","))
+    #             if citiesList != None:
+    #                 break
+    #         except:
+    #             continue
+    elif programMode == 0:
+        sys.exit("Exiting Thales")
+                
         
 def centuriesMenu(eclipses_dictionary):
     print("Select desired century:")
