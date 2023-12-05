@@ -9,7 +9,7 @@ def getFilePath(fileName):
     sys.exit(f"{fileName} not found.")
 
 def inputControl(inputNumber,maxNumberValue):
-    if type(inputNumber).__name__ == "list":
+    if type(inputNumber) == list:
         for number in inputNumber:
             try:
                 number = int(inputNumber)
@@ -37,12 +37,13 @@ def importKernels(kernelsRelativePath):
     metaKernel = "meta-kernel.txt"
     kernelsPath = os.path.join(programExecutionDir,kernelsRelativePath)
     try:
-        os.chdir(kernelsPath)
+        print(kernelsPath)
         metaKernelPath = os.path.join(kernelsPath,metaKernel)
+        os.chdir(kernelsPath)
     except:
         metaKernelPath = getFilePath(metaKernel)
-        os.chdir(os.path.dirname(kernelsPath))  
-    with open(metaKernel,"r") as file:
+        os.chdir(kernelsPath)  
+    with open(metaKernelPath,"r") as file:
         kernelsList = (file.read().split("(")[1]).split(")")[0]
         print ("Loading kernels:")
         sp.furnsh(metaKernelPath)

@@ -5,15 +5,18 @@ from Modules.Constants.constants import scaleCoff, step, executionDirectory, ker
 import spiceypy as sp
 import time
 from Modules.Eclispe_Calculations import eclipseFinder
+from Modules.Tools.intro import intro
 from Modules.Tools.tools import importKernels
 from Modules.Console_Menu import menu
 from Modules.Scene_Visualisation import Visualisator
+from Modules.Tools.CustomThread import ThreadWithReturnValue
 #MAIN TASKS: CREATE LOGGER
 def main():
     print(time.strftime("Current date: ""%D %H:%M:%S",time.localtime()))
     importKernels(kernelsRelativePath)
-    imagesDirPath = os.path.join(os.path.dirname(executionDirectory),"Rendered Images")
+    intro()
     eclipsesList = eclipseFinder.findEclipses()
+    imagesDirPath = os.path.join(os.path.dirname(executionDirectory),"Rendered Images")
     eclipseWindow, penumbraRadius,eclipsedCities = menu.create_UI(eclipsesList)
     while eclipseWindow == 0:
         eclipseWindow, penumbraRadius,eclipsedCities = menu.create_UI(eclipsesList)

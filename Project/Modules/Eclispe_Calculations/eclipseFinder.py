@@ -12,20 +12,20 @@ def findEclipses():
     maxivl = int(maxwin/2)
     window = sp.stypes.SPICEDOUBLE_CELL(maxwin)
     result = sp.stypes.SPICEDOUBLE_CELL(maxwin)
-    print("Version:" + sp.tkvrsn("Toolkit"))
-    metaKernel = getFilePath("meta-kernel.txt")
-    os.chdir(os.path.dirname(metaKernel))
-    sp.furnsh(metaKernel)
-    file = open(metaKernel,"r")
-    kernelsList = (file.read().split("(")[1]).split(")")[0]
-    print ("Loading kernels:")
-    print(kernelsList)
-    file.close
-    print("Kernels loaded!")
+    # print("Version:" + sp.tkvrsn("Toolkit"))
+    # metaKernel = getFilePath("meta-kernel.txt")
+    # os.chdir(os.path.dirname(metaKernel))
+    # sp.furnsh(metaKernel)
+    # file = open(metaKernel,"r")
+    # kernelsList = (file.read().split("(")[1]).split(")")[0]
+    # print ("Loading kernels:")
+    # print(kernelsList)
+    # file.close
+    # print("Kernels loaded!")
     start_time_utc = "1900 september 1 00:00:00"
     end_time_utc = "2140 December 1 00:00:00"
-    print("Start time: ",start_time_utc)
-    print("End time: ",end_time_utc)
+    # print("Start time: ",start_time_utc)
+    # print("End time: ",end_time_utc)
     start_time = sp.str2et(start_time_utc)
     end_time = sp.str2et(end_time_utc)
     sp.wninsd(start_time,end_time,window)
@@ -40,11 +40,11 @@ def angualSeparationFinder(maxivl,window,result):
     relate = "<"
     step = 5*sp.spd()
     adjust = 0
-    print("Starting angular separation search")
+    # print("Starting angular separation search")
     sp.gfsep("MOON", "POINT", " ","SUN",  "POINT", " ","NONE",observer,relate,limitRadians,adjust,step,maxivl,window,result)
-    print("Done")
+    # print("Done")
     window = sp.copy(result)
-    print("GFSEP FUNCTION OUTPUT window:",window)
+    # print("GFSEP FUNCTION OUTPUT window:",window)
     return window
 
 def occultationFinder(window):
@@ -55,9 +55,9 @@ def occultationFinder(window):
     while i<sp.wncard(eclipses):
         [left,right] = sp.wnfetd(eclipses , i)
         start_of_eclipse = sp.timout(left,"YYYY Mon DD HR:MN:SC ::UTC\n")
-        print(f"START: {start_of_eclipse}")
+        # print(f"START: {start_of_eclipse}")
         end_of_eclipse = sp.timout(right,"YYYY Mon DD HR:MN:SC ::UTC")
-        print(f"END:   {end_of_eclipse}")
+        # print(f"END:   {end_of_eclipse}")
         eclipses_list.append([start_of_eclipse,end_of_eclipse])
         i+=1
     return eclipses_list

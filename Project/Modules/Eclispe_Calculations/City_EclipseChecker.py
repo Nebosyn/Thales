@@ -2,16 +2,14 @@ import math
 import csv
 import spiceypy as sp
 import os,sys
-from ..Constants.constants import scaleCoff
+from ..Constants.constants import scaleCoff,worldCitesDataPath
 from ..Tools.tools import getFilePath
 from ..Celestial_Data.data import getCelestialObjectSpecs
 from ..Celestial_Calculations.CelestialMath import pointLocationOnACelestialObject,getPointLatitundal
-
 def CityEclipseCheck(window:tuple,scaleCoff:int,programMode:int,penumbraRadius:any,chosenCountries):
     print("Executing cities scan...")
-    currentDirectory = os.path.dirname(os.getcwd())
-    os.chdir(currentDirectory)
-    with open("worldcities.csv","r",encoding="UTF-8") as f:
+    print(os.getcwd())
+    with open(worldCitesDataPath,"r",encoding="UTF-8") as f:
         startOfEclipse = sp.utc2et(window[0])
         endOfEclipse = sp.utc2et(window[1])
         step = 60
