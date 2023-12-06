@@ -4,3 +4,4 @@ step = 60
 executionDirectory = os.getcwd()
 kernelsRelativePath = "Kernels"
 worldCitesDataPath = "Modules\\Cities_Data\\worldcities.csv"
+blenderPythonPath = "blender_sp\\4.0\\python\\bin\\python.exe"

@@ -1,7 +1,7 @@
 import os,sys
 executionDirectory = os.getcwd()
 sys.path.append(executionDirectory)
-from Modules.Constants.constants import scaleCoff, step, executionDirectory, kernelsRelativePath
+from Modules.Constants.constants import executionDirectory, kernelsRelativePath
 import spiceypy as sp
 import time
 from Modules.Eclispe_Calculations import eclipseFinder

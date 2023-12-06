@@ -1,8 +1,8 @@
 import os,sys
 from Modules.Tools.tools import getFilePath
+from Modules.Constants.constants import blenderPythonPath
 pythonFilePath = getFilePath("Thales.py")
 blenderExePath = getFilePath("blender.exe")
-blenderPythonPath = getFilePath("python.exe")
 print(pythonFilePath)
 print(blenderExePath)
 print(blenderPythonPath)
