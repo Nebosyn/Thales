@@ -29,14 +29,15 @@ def create_UI(eclipses_list):
         while output[1] == 0:
             output = centuriesMenu(eclipses_dictionary)
         return output
-    # elif programMode == 2:
-    #     while True:
-    #         try:
-    #             citiesList = inputControl(input("Enter city/cities separated by commas: ").split(","))
-    #             if citiesList != None:
-    #                 break
-    #         except:
-    #             continue
+    elif programMode == 2:
+        while True:
+            try:
+                citiesList = inputControl(input("Enter city/cities separated by commas: ").split(","))
+                if citiesList != None:
+                    break
+                City_EclipseChecker.getAvailableCountries
+            except:
+                continue
     elif programMode == 0:
         sys.exit("Exiting Thales")
                 
@@ -101,7 +102,7 @@ def cityScan(chosen_eclipse):
                 chosenCountries = []
                 chosenCountriesNumbers = inputControl(input(f"Please choose countires in the list(Separated by commas): ").split(","),index+1)
                 chosenCountriesNumbers.sort()
-                if chosenCountryNumber[0] == 0:
+                if chosenCountriesNumbers[0] == 0:
                         return 0, 0, 0
                 for chosenCountryNumber in chosenCountriesNumbers:
                     chosenCountries.append(availableCountries[int(chosenCountryNumber)-1])

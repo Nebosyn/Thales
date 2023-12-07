@@ -8,27 +8,30 @@ def getFilePath(fileName):
             return(filePath)
     sys.exit(f"{fileName} not found.")
 
-def inputControl(inputNumber,maxNumberValue):
-    if type(inputNumber) == list:
-        for number in inputNumber:
+def inputControl(userInput,maxuinputValue,listScanMode):
+    if type(userInput) == list:
+        for uinput in userInput:
             try:
-                number = int(inputNumber)
+                if listScanMode == 1:
+                    uinput = int(uinput)
+                else:
+                    uinput = str(uinput)
             except:
                 print("Wrong input")
                 return None    
-        if number>maxNumberValue or number<0:
+        if uinput>maxuinputValue or uinput<0:
             print("Wrong input")
             return None
     else:
         try:    
-            inputNumber = int(inputNumber)
+            userInput = int(userInput)
         except:
             print("Wrong input")
             return None
-        if inputNumber>maxNumberValue or inputNumber<0:
+        if userInput>maxuinputValue or userInput<0:
             print("Wrong input")
             return None
-    return inputNumber
+    return userInput
 
 def importKernels(kernelsRelativePath):
     programExecutionDir = os.getcwd()
