@@ -5,3 +5,5 @@
 /pyvenv.cfg
 /Scripts
 /Rendered Images
+__pycache__/
+ *.pyc

@@ -12,7 +12,7 @@ def create_UI(eclipses_list):
 3.Manual date input 
 0.Exit Thales""")
     while True:
-        programMode = inputControl(input("Select program mode: "),3)
+        programMode = inputControl(input("Select program mode: "),3,None)
         if programMode != None:
             break
     if programMode == 1:
@@ -32,11 +32,15 @@ def create_UI(eclipses_list):
     elif programMode == 2:
         while True:
             try:
-                citiesList = inputControl(input("Enter city/cities separated by commas: ").split(","))
+                availableCities = City_EclipseChecker.getAvailableCountries()
                 if citiesList != None:
                     break
-                City_EclipseChecker.getAvailableCountries
+                citiesList = inputControl(input("Enter city/cities separated by commas: ").split(","),len(availableCities),2)
+                for city in citiesList:
+                    if city not in availableCities:
+                        print("Wrong input")
             except:
+                print("Wrong input")
                 continue
     elif programMode == 0:
         sys.exit("Exiting Thales")
@@ -66,7 +70,7 @@ def eclipsesOfCenturyMenu(chosenCentury,eclipses_dictionary):
         durationOfEclipse = str(datetime.timedelta(seconds = sp.utc2et(eclipseWindow[1])-sp.utc2et(eclipseWindow[0]))).split('.')[0]
         print(f"{index+1}. {eclipse_without_time[0]}")
     print("0.Change century")
-    windowNumber = inputControl(input("Select eclipse from the list: "),index+1)
+    windowNumber = inputControl(input("Select eclipse from the list: "),index+1,None)
     while True:
         if windowNumber != None:
             break
@@ -85,7 +89,7 @@ def cityScan(chosen_eclipse):
 3.Certain countries
 0.Rechoose eclipse""")
     while True: 
-        cityScanMode = inputControl(input("Chose city scan mode:"),3)
+        cityScanMode = inputControl(input("Chose city scan mode:"),3,None)
         if cityScanMode != None:
             break
     if cityScanMode == 0:
@@ -100,7 +104,7 @@ def cityScan(chosen_eclipse):
         while True:
             try:
                 chosenCountries = []
-                chosenCountriesNumbers = inputControl(input(f"Please choose countires in the list(Separated by commas): ").split(","),index+1)
+                chosenCountriesNumbers = inputControl(input(f"Please choose countires in the list(Separated by commas): ").split(","),index+1,1)
                 chosenCountriesNumbers.sort()
                 if chosenCountriesNumbers[0] == 0:
                         return 0, 0, 0
@@ -119,7 +123,7 @@ def chooseRenderMode():
 1.Create animation
 2.Render a photo
 0.Rechoose eclipse
-: """),2)
+: """),2,None)
     return whatToDo
 
 def chooseCameras(eclipsedCities):
