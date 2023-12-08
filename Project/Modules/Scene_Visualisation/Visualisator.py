@@ -40,8 +40,6 @@ def StartVisualisation(eclipseWindow,penumbraRadius,eclipsedCities,imagesDirPath
     renderCamerasNames = createAllCameras(renderCamerasIdentificators,earthSpecs,moonSpecs,sunSpecs,start_ephemerisTime)
     if renderMode == 1:
         renderAnimation(start_ephemerisTime,renderCamerasIdentificators,renderCamerasNames,sunSpecs,imagesDirPath,step,quantityOfFrames,scaleCoff,penumbraRadius)
-    elif renderMode == 2:
-        pass
 
 def renderAnimation(start_ephemerisTime:float,renderCamerasIdentificators:list,renderCamerasNames:list,sunSpecs:list,imagesDirPath:str,step:int,quantityOfFrames:int,scaleCoff:int,penumbraRadius):
     imagesDirPath,end_utc_time,timeToRenderVideos,videoSpeed = createFrames(start_ephemerisTime,renderCamerasIdentificators,renderCamerasNames,sunSpecs,imagesDirPath,step,quantityOfFrames,scaleCoff,penumbraRadius)

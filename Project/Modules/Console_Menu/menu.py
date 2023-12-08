@@ -2,57 +2,88 @@ import os,sys
 import spiceypy as sp
 import datetime
 from ..Eclispe_Calculations import eclipseFinder,City_EclipseChecker
-from ..Constants.constants import  scaleCoff
-from ..Tools.tools import inputControl
+from ..Constants.constants import  scaleCoff,eclipsesCachePath
+from ..Tools.tools import inputControl, createEclipseCache, loadEclipseCache
 def create_UI(eclipses_list):
-    eclipses_dictionary = {}
     print("""
 1.All eclipses
-2.Eclipses for desired city/cities
-3.Manual date input 
+2.Eclipses by country
 0.Exit Thales""")
-    while True:
-        programMode = inputControl(input("Select program mode: "),3,None)
+    output = 0
+    while output == 0:
+        global programMode
+        programMode = inputControl(input("Select program mode: "),2,None)
         if programMode != None:
             break
     if programMode == 1:
-        for eclipse in eclipses_list:
-            eclipsestrp_start = datetime.datetime.strptime(eclipse[0],"%Y %b %d %H:%M:%S")  
-            eclipsestrp_end = datetime.datetime.strptime(eclipse[1],"%Y %b %d %H:%M:%S")  
-            print(eclipsestrp_start)
-            year_century = str(eclipsestrp_start.year)[:-2]
-            if year_century not in eclipses_dictionary.keys():
-                eclipses_dictionary[year_century] = []
-            eclipses_dictionary[year_century].append(eclipse)
-        print(eclipses_dictionary)
+        eclipses_dictionary = createEclipsesDictionary(eclipses_list)
         output = centuriesMenu(eclipses_dictionary)
         while output[1] == 0:
             output = centuriesMenu(eclipses_dictionary)
         return output
     elif programMode == 2:
-        while True:
-            try:
-                availableCities = City_EclipseChecker.getAvailableCountries()
-                if citiesList != None:
+        loop = True
+        while loop:
+            sortedEclipsesFiles = os.listdir(eclipsesCachePath)
+            for index,sortedEclipsesFile in enumerate(sortedEclipsesFiles):
+                countryName = sortedEclipsesFile.split(".")[0]
+                print(f"{index+1}. {countryName}")
+            print("Available countries")
+            while True:
+                userInput = input("Choose country (Need another country? Type: Recalculate): ")
+                if userInput.lower() == "recalculate": 
+                    try:
+                        chosenCountry = chooseCountries(1)
+                        eclipses_dictionary = sortEclipsesByCountry(eclipses_list,chosenCountry)
+                        loop = False
+                        break
+                    except:
+                        sys.exit("Program Crashed")
+                else:
+                    userInput = inputControl(userInput,index+1,None)
+                    eclipses_dictionary = loadEclipseCache(eclipsesCachePath,sortedEclipsesFiles[userInput-1])
+                    loop = False
                     break
-                citiesList = inputControl(input("Enter city/cities separated by commas: ").split(","),len(availableCities),2)
-                for city in citiesList:
-                    if city not in availableCities:
-                        print("Wrong input")
-            except:
-                print("Wrong input")
-                continue
+        output = centuriesMenu(eclipses_dictionary)
+        while output[1] == 0:
+            output = centuriesMenu(eclipses_dictionary)
+        return output
     elif programMode == 0:
         sys.exit("Exiting Thales")
-                
-        
+
+def sortEclipsesByCountry(eclipses_list,chosenCountry):
+    eclipses_list_certain_country = []
+    for index, eclipse in enumerate(eclipses_list):
+        print(f"{index} of {len(eclipses_list)} eclipses scanned")
+        recalculated_eclipse, penumbraRadius = eclipseFinder.recalculateEclipse(eclipse)
+        print(os.getcwd())
+        if City_EclipseChecker.citiesEclipseCheck(recalculated_eclipse,scaleCoff,4,penumbraRadius,chosenCountry) == True:
+            eclipses_list_certain_country.append(recalculated_eclipse)
+            print(f"Country was eclipsed, adding eclipse window (№{index+1}) to the list")
+            continue
+    eclipses_dictionary = createEclipsesDictionary(eclipses_list_certain_country)
+    createEclipseCache(chosenCountry,eclipses_dictionary,eclipsesCachePath)
+    return eclipses_dictionary
+
+def createEclipsesDictionary(eclipses_list):
+    eclipses_dictionary = {}
+    for eclipse in eclipses_list:
+        eclipsestrp_start = datetime.datetime.strptime(eclipse[0],"%Y %b %d %H:%M:%S")  
+        eclipsestrp_end = datetime.datetime.strptime(eclipse[1],"%Y %b %d %H:%M:%S")  
+        print(eclipsestrp_start)
+        year_century = str(eclipsestrp_start.year)[:-2]
+        if year_century not in eclipses_dictionary.keys():
+            eclipses_dictionary[year_century] = []
+        eclipses_dictionary[year_century].append(eclipse)
+    return eclipses_dictionary
+
 def centuriesMenu(eclipses_dictionary):
     print("Select desired century:")
     for index,century in enumerate(eclipses_dictionary.keys()):
         print(f"{index+1}.{century}00")
     print("0.Change program mode")
     while True:
-        menuInput = inputControl(input("Choose a number: "),index+1)
+        menuInput = inputControl(input("Choose a number: "),index+1,None)
         if menuInput != None: 
             break
     if menuInput == 0:
@@ -77,7 +108,7 @@ def eclipsesOfCenturyMenu(chosenCentury,eclipses_dictionary):
     if windowNumber == 0:
         return 1,0,1
     chosen_eclipse = eclipses_dictionary.get(chosenCentury)[windowNumber-1]
-    chosen_eclipse,penumbraRadius, eclipsedCities= cityScan(chosen_eclipse)
+    chosen_eclipse,penumbraRadius, eclipsedCities = cityScan(chosen_eclipse)
     return chosen_eclipse,eclipsedCities,penumbraRadius
 
 def cityScan(chosen_eclipse):
@@ -96,35 +127,41 @@ def cityScan(chosen_eclipse):
         return 1, 1, 0
     chosenCountries = None
     if cityScanMode == 3:
-        currentPath = os.getcwd()
-        availableCountries = City_EclipseChecker.getAvailableCountries()
-        for index,country in enumerate(availableCountries):
-            print(f"{index+1}. {country}")
+        chosenCountries = chooseCountries(2)
+    eclipsedCities = City_EclipseChecker.citiesEclipseCheck(chosen_eclipse,scaleCoff,cityScanMode,penumbraRadius,chosenCountries)
+    return chosen_eclipse,eclipsedCities, penumbraRadius
+
+def chooseRenderMode():
+    whatToDo = inputControl(input(
+"""1.Create animation
+0.Rechoose eclipse
+Choose option: """),2,None)
+    return whatToDo
+
+def chooseCountries(countryChooseMode):
+    availableCountries = City_EclipseChecker.getAvailableCountries()
+    for index,country in enumerate(availableCountries):
+        print(f"{index+1}. {country}")
+    if countryChooseMode == 2:
         print("0. Change city scan mode")
-        while True:
-            try:
+    while True:
+        try:
+            if countryChooseMode == 1:
+                chosenCountryNumber = inputControl(input(f"Please choose country number (Sorting will take about 30-40 minutes): "),index+1,None)
+                chosenCountries = availableCountries[int(chosenCountryNumber)-1]
+            elif countryChooseMode == 2:
                 chosenCountries = []
-                chosenCountriesNumbers = inputControl(input(f"Please choose countires in the list(Separated by commas): ").split(","),index+1,1)
+                chosenCountriesNumbers = inputControl(input(f"Please choose country/countries in the list(Separated by commas): ").split(","),index+1,None)
                 chosenCountriesNumbers.sort()
                 if chosenCountriesNumbers[0] == 0:
                         return 0, 0, 0
                 for chosenCountryNumber in chosenCountriesNumbers:
                     chosenCountries.append(availableCountries[int(chosenCountryNumber)-1])
-                os.chdir(currentPath)
-                break
-            except:
-                print("Wrong input")
-    eclipsedCities = City_EclipseChecker.CityEclipseCheck(chosen_eclipse,scaleCoff,cityScanMode,penumbraRadius,chosenCountries)
-    return chosen_eclipse,eclipsedCities, penumbraRadius
-
-def chooseRenderMode():
-    whatToDo = inputControl(input(
-"""Choose option
-1.Create animation
-2.Render a photo
-0.Rechoose eclipse
-: """),2,None)
-    return whatToDo
+            os.chdir(currentPath)
+            break
+        except:
+            print("Wrong input")
+    return chosenCountries
 
 def chooseCameras(eclipsedCities):
     renderCamerasIdentificators = []

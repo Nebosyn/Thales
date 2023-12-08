@@ -1,5 +1,6 @@
 import os,sys
 import spiceypy as sp
+import json
 def getFilePath(fileName):
     rootDirectory = os.getcwd()
     for relativePath,dirs,files in os.walk(rootDirectory):
@@ -14,14 +15,15 @@ def inputControl(userInput,maxuinputValue,listScanMode):
             try:
                 if listScanMode == 1:
                     uinput = int(uinput)
+                    if uinput>maxuinputValue or uinput<0:
+                        print("Wrong input")
+                        return None
                 else:
-                    uinput = str(uinput)
+                    if type(uinput) != str:
+                        print(f"-> {uinput} incorrect type")
             except:
                 print("Wrong input")
-                return None    
-        if uinput>maxuinputValue or uinput<0:
-            print("Wrong input")
-            return None
+                return None
     else:
         try:    
             userInput = int(userInput)
@@ -32,6 +34,15 @@ def inputControl(userInput,maxuinputValue,listScanMode):
             print("Wrong input")
             return None
     return userInput
+
+def createEclipseCache(fileName,valueToWrite,pathToFile):
+    with open(pathToFile+"\\"+fileName+".json","w") as f:
+        json.dump(valueToWrite,f)
+
+def loadEclipseCache(fileDirPath,fileName):
+    with open(f"{os.path.join(fileDirPath,fileName)}","r") as f:
+        dicitonary =json.load(f)
+        return dicitonary
 
 def importKernels(kernelsRelativePath):
     programExecutionDir = os.getcwd()

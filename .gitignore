@@ -1,9 +1,10 @@
 /.vscode
 /Project/blender_sp
+/Project/test.py
 /Include
 /Lib
 /pyvenv.cfg
 /Scripts
 /Rendered Images
 __pycache__/
- *.pyc
+*.pyc

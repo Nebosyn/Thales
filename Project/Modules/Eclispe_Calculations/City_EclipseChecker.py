@@ -6,9 +6,9 @@ from ..Constants.constants import scaleCoff,worldCitesDataPath
 from ..Tools.tools import getFilePath
 from ..Celestial_Data.data import getCelestialObjectSpecs
 from ..Celestial_Calculations.CelestialMath import pointLocationOnACelestialObject,getPointLatitundal
-def CityEclipseCheck(window:tuple,scaleCoff:int,programMode:int,penumbraRadius:any,chosenCountries):
+
+def citiesEclipseCheck(window:tuple,scaleCoff:int,programMode:int,penumbraRadius:any,chosenCountries):
     print("Executing cities scan...")
-    print(os.getcwd())
     with open(worldCitesDataPath,"r",encoding="UTF-8") as f:
         startOfEclipse = sp.utc2et(window[0])
         endOfEclipse = sp.utc2et(window[1])
@@ -20,7 +20,7 @@ def CityEclipseCheck(window:tuple,scaleCoff:int,programMode:int,penumbraRadius:a
                 citiesData.append(cityData)
             if programMode == 2 and (cityData[8] == "primary" or cityData[8] == "admin"):
                 citiesData.append(cityData)
-            if programMode == 3 and cityData[4] in chosenCountries:
+            if (programMode == 3 or programMode == 4) and cityData[4] in chosenCountries:
                 citiesData.append(cityData)
         eclipsedCities = []
         currentTime = startOfEclipse
@@ -32,6 +32,8 @@ def CityEclipseCheck(window:tuple,scaleCoff:int,programMode:int,penumbraRadius:a
             for cityData in citiesData:
                 eclipsedCity = cityEclipseCheck(cityData,earthSpecs,moonSpecs,sunSpecs,penumbraRadius,currentTime)
                 if eclipsedCity != None:
+                    if programMode == 4:
+                        return True
                     eclipsedCities.append(eclipsedCity)
                     citiesData.remove(cityData)
             currentTime = currentTime+step
@@ -82,8 +84,7 @@ def checkEclipseVisibility(penumbraRadius,solarEclipseCenterPos,pointPos,pointOf
 def getAvailableCountries():
     availableCountries = []
     try:
-        filePath = getFilePath("worldcities.csv")
-        with open(filePath,'r',encoding="UTF-8") as file:
+        with open(worldCitesDataPath,'r',encoding="UTF-8") as file:
             citiesData = list(csv.reader(file))
             for cityData in citiesData:
                 cityCountry = cityData[4]
@@ -166,7 +167,7 @@ def getCityLocation(cityLatitundal,earthPos:tuple,earthRadius:float,timeEphemeri
     radius, subsollongitude, subsollatitude = sp.reclat(sub_solar_point_position)
     # print("subsollongitude{}".format(math.degrees(subsollongitude)))
     # print("earth_sunangle[2]{}".format(math.degrees(earth_sunangle[2])))
-    zangle = earth_sunangle[2] - subsollongitude
+    zangle = -earth_sunangle[2] - subsollongitude
     # print("Z-Angle{}".format(math.degrees(zangle)))
     # print("Longitude{}".format(longitude))
     # print("Latitude{}".format(latitude))

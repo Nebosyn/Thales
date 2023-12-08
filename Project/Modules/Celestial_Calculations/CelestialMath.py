@@ -32,5 +32,5 @@ def calculateObjectRotation(planetName:str,time:float,planetPos:tuple,sunPos:tup
     # print("Sub Sol:{} {}".format(sub_solar_point_position,planetName))
     [radius, longitude, latitude] = sp.reclat(sub_solar_point_position)
     # print("Sub Sol: long:{} lat:{} planet:{}".format(math.degrees(longitude),math.degrees(latitude),planetName))
-    zangle = mainPlanet_sunAngle[2] - longitude
+    zangle = -mainPlanet_sunAngle[2] - longitude
     return zangle
