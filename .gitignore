@@ -6,5 +6,6 @@
 /pyvenv.cfg
 /Scripts
 /Project/Rendered Images
+/Thales.zip
 __pycache__/
 *.pyc
