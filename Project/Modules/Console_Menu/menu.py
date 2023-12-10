@@ -139,6 +139,7 @@ Choose option: """),2,None)
     return whatToDo
 
 def chooseCountries(countryChooseMode):
+    currentPath = os.getcwd()
     availableCountries = City_EclipseChecker.getAvailableCountries()
     for index,country in enumerate(availableCountries):
         print(f"{index+1}. {country}")

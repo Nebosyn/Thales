@@ -156,8 +156,8 @@ def fullRayCast(earthSpecs,moonSpecs,sunSpecs,penumbraRadius,typeOfCreation):
     pointsList = []
     radiusDecrease = 100/scaleCoff
     while penumbraRadius>0:
-        penumbraRadius -= radiusDecrease
         pointsList.append(createEclipseRays(earthSpecs,moonSpecs,sunSpecs,penumbraRadius,typeOfCreation))
+        penumbraRadius -= radiusDecrease
     return pointsList,radiusDecrease
 
 def createEclipseShadowMapping(earthSpecs,moonSpecs,sunSpecs,penumbraRadius):

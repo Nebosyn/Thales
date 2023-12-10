@@ -62,6 +62,8 @@ def configureVideoEditor(imagesDirPath,renderCamerasNames,videoSpeed):
     # renderedImagesFolders.reverse()
     print("renderedImagesFolders{}".format(renderedImagesFolders))
     for imagesFolder in renderedImagesFolders:
+        if imagesFolder == "Rendered Videos":
+            continue
         print(*renderCamerasNames)
         cameraName = renderCamerasNames[channelCounter-1]
         print(imagesFolder)
