@@ -16,7 +16,7 @@ def main():
     importKernels(kernelsRelativePath)
     intro()
     eclipsesList = eclipseFinder.findEclipses()
-    imagesDirPath = os.path.join(os.path.dirname(executionDirectory),"Rendered Images")
+    imagesDirPath = os.path.join(executionDirectory,"Rendered Images")
     renderMode = 0
     while renderMode == 0:
         eclipseWindow, penumbraRadius,eclipsedCities = menu.create_UI(eclipsesList)

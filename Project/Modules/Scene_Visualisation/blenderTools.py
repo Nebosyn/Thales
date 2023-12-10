@@ -58,16 +58,9 @@ def configureVideoEditor(imagesDirPath,renderCamerasNames,videoSpeed):
     print("ImagesDirPath{}".format(imagesDirPath))
     sequencer = bpy.context.scene.sequence_editor
     channelCounter = 1
-    renderedImagesFolders = os.listdir(imagesDirPath)
-    # renderedImagesFolders.reverse()
-    print("renderedImagesFolders{}".format(renderedImagesFolders))
-    for imagesFolder in renderedImagesFolders:
-        if imagesFolder == "Rendered Videos":
-            continue
+    for cameraName in renderCamerasNames:
         print(*renderCamerasNames)
-        cameraName = renderCamerasNames[channelCounter-1]
-        print(imagesFolder)
-        imagesFolder = os.path.join(imagesDirPath,imagesFolder)
+        imagesFolder = os.path.join(imagesDirPath,cameraName)
         imagesList = sorted(os.listdir(imagesFolder))
         firstImage, *restImages = imagesList
         firstImagePath = os.path.join(imagesFolder,firstImage)
@@ -91,7 +84,10 @@ def configureVideoEditor(imagesDirPath,renderCamerasNames,videoSpeed):
 def renderVideo(start_ephemerisTime,end_utc_time,imagesDirPath,camerasNames):
     start_utc_time = str(sp.et2utc(start_ephemerisTime,"C",0).replace(":","-"))
     videosSaveFolderPath = os.path.join(imagesDirPath,"Rendered Videos")
+    reversed(camerasNames)
     for cameraName in camerasNames:
+        if cameraName == "Rendered Videos":
+            continue
         bpy.context.scene.sequence_editor.channels[cameraName].mute = False
         videoSavePath = os.path.join(videosSaveFolderPath,cameraName+f" {start_utc_time} -- {end_utc_time}")
         bpy.context.scene.render.filepath = videoSavePath
