@@ -170,10 +170,11 @@ def chooseCameras(eclipsedCities):
     defaultCameras = [("MOON","EARTH"),("SUN","EARTH")]
 
     [print(f"{index+1}. {cameraData[0]}--SUN") for index,cameraData in enumerate(eclipsedCities)]
+    print("Cameras in space\n")
     [print(f"{len(eclipsedCities)+index+1}. {cameraData[0]}--{cameraData[1]}") for index,cameraData in enumerate(defaultCameras)]
     print("0. Choose all cameras (The rendering process for all cameras is expected to take a minimum of 1-3 hours.)")
     availableCameras = eclipsedCities+defaultCameras
-    renderCamerasIdentificatorsNumbers = input("Choose cameras(Separated by commas): ").split(",")
+    renderCamerasIdentificatorsNumbers = input("Choose cameras(Separated by commas: 1,2,3...): ").split(",")
     renderCamerasIdentificatorsNumbers.sort()
     if int(renderCamerasIdentificatorsNumbers[0]) == 0:
         renderCamerasIdentificators = availableCameras

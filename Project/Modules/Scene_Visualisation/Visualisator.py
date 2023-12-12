@@ -48,6 +48,7 @@ def renderAnimation(start_ephemerisTime:float,renderCamerasIdentificators:list,r
         renderVideo(start_ephemerisTime,end_utc_time,imagesDirPath,renderCamerasNames)
 
 def createFrames(start_ephemerisTime:float,renderCamerasIdentificators:list,renderCamerasNames,sunSpecs:list,imagesDirPath:str,step:int,quantityOfFrames:int,scaleCoff:int,penumbraRadius):
+    print("Calculating...")
     imagesDirPath = os.path.join(imagesDirPath,(str(sp.et2utc(start_ephemerisTime,"C",0).replace(":","-"))))
     scene = bpy.context.scene
     scene.frame_start = 0
@@ -82,6 +83,7 @@ def createFrames(start_ephemerisTime:float,renderCamerasIdentificators:list,rend
     videoSpeed = quantityOfFrames * videoSpeedCoff
     amountOfAllFrames,timeToRenderFrames,timeToRenderVideos = renderData(amountOfCameras,quantityOfFrames,videoSpeed)
     allCamerasData = getAllCamerasData(renderCamerasIdentificators,earthSpecs,moonSpecs,sunSpecs,frameRenderDate)
+    print("Done")
     if input(f"Render frames? (Amount of frames: {amountOfAllFrames}; Approximate time of render: {timeToRenderFrames}) y/n: ").lower() == "y":
         bpy.context.scene.render.use_stamp_note = True
         renderFrames(start_ephemerisTime,quantityOfFrames,allCamerasData,imagesDirPath,step)
