@@ -141,6 +141,7 @@ Choose option: """),2,None)
 def chooseCountries(countryChooseMode):
     currentPath = os.getcwd()
     availableCountries = City_EclipseChecker.getAvailableCountries()
+    availableCountries = sorted(availableCountries,key=str.lower)
     for index,country in enumerate(availableCountries):
         print(f"{index+1}. {country}")
     if countryChooseMode == 2:
@@ -166,7 +167,7 @@ def chooseCountries(countryChooseMode):
 
 def chooseCameras(eclipsedCities):
     renderCamerasIdentificators = []
-    
+    eclipsedCities = sorted(eclipsedCities, key= lambda x: x[0])
     defaultCameras = [("MOON","EARTH"),("SUN","EARTH")]
 
     [print(f"{index+1}. {cameraData[0]}--SUN") for index,cameraData in enumerate(eclipsedCities)]
