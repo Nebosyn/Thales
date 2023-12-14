@@ -56,7 +56,6 @@ def sortEclipsesByCountry(eclipses_list,chosenCountry):
     for index, eclipse in enumerate(eclipses_list):
         print(f"{index} of {len(eclipses_list)} eclipses scanned")
         recalculated_eclipse, penumbraRadius = eclipseFinder.recalculateEclipse(eclipse)
-        print(os.getcwd())
         if City_EclipseChecker.citiesEclipseCheck(recalculated_eclipse,scaleCoff,4,penumbraRadius,chosenCountry) == True:
             eclipses_list_certain_country.append(recalculated_eclipse)
             print(f"Country was eclipsed, adding eclipse window (№{index+1}) to the list")
@@ -70,7 +69,7 @@ def createEclipsesDictionary(eclipses_list):
     for eclipse in eclipses_list:
         eclipsestrp_start = datetime.datetime.strptime(eclipse[0],"%Y %b %d %H:%M:%S")  
         eclipsestrp_end = datetime.datetime.strptime(eclipse[1],"%Y %b %d %H:%M:%S")  
-        print(eclipsestrp_start)
+        # print(eclipsestrp_start)
         year_century = str(eclipsestrp_start.year)[:-2]
         if year_century not in eclipses_dictionary.keys():
             eclipses_dictionary[year_century] = []
@@ -94,13 +93,12 @@ def centuriesMenu(eclipses_dictionary):
     return output
 
 def eclipsesOfCenturyMenu(chosenCentury,eclipses_dictionary):
-    print(chosenCentury)
-    print(type(chosenCentury))
     for index, eclipseWindow in enumerate(eclipses_dictionary[chosenCentury]):
         eclipse_without_time = (" ".join(eclipseWindow[0].split()[:3])," ".join(eclipseWindow[1].split()[:3]))
         durationOfEclipse = str(datetime.timedelta(seconds = sp.utc2et(eclipseWindow[1])-sp.utc2et(eclipseWindow[0]))).split('.')[0]
         print(f"{index+1}. {eclipse_without_time[0]}")
     print("0.Change century")
+    print(f"Chosen century -- {chosenCentury}")
     windowNumber = inputControl(input("Select eclipse from the list: "),index+1,None)
     while True:
         if windowNumber != None:
@@ -127,6 +125,8 @@ def cityScan(chosen_eclipse):
         return 1, 1, 0
     chosenCountries = None
     if cityScanMode == 3:
+        print()
+        print(f"Chosen eclipse : {chosen_eclipse[0]} -- {chosen_eclipse[1]}")
         chosenCountries = chooseCountries(2)
     eclipsedCities = City_EclipseChecker.citiesEclipseCheck(chosen_eclipse,scaleCoff,cityScanMode,penumbraRadius,chosenCountries)
     return chosen_eclipse,eclipsedCities, penumbraRadius

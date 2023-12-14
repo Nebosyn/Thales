@@ -55,11 +55,11 @@ def renderImage(cameraName:str,saveFolderPath:str,fileName:str):
     
 def configureVideoEditor(imagesDirPath,renderCamerasNames,videoSpeed):
     bpy.context.scene.render.image_settings.file_format = 'FFMPEG'
-    print("ImagesDirPath{}".format(imagesDirPath))
+    # print("ImagesDirPath{}".format(imagesDirPath))
     sequencer = bpy.context.scene.sequence_editor
     channelCounter = 1
     for cameraName in renderCamerasNames:
-        print(*renderCamerasNames)
+        # print(*renderCamerasNames)
         imagesFolder = os.path.join(imagesDirPath,cameraName)
         imagesList = sorted(os.listdir(imagesFolder))
         firstImage, *restImages = imagesList
