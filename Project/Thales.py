@@ -9,7 +9,6 @@ from Modules.Tools.intro import intro
 from Modules.Tools.tools import importKernels
 from Modules.Console_Menu import menu
 from Modules.Scene_Visualisation import Visualisator
-from Modules.Tools.CustomThread import ThreadWithReturnValue
 #MAIN TASKS: CREATE LOGGER
 def main():
     print(time.strftime("Current date: ""%D %H:%M:%S",time.localtime()))

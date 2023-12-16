@@ -3,7 +3,6 @@ import csv
 import spiceypy as sp
 import os,sys
 from ..Constants.constants import scaleCoff,worldCitesDataPath
-from ..Tools.tools import getFilePath
 from ..Celestial_Data.data import getCelestialObjectSpecs
 from ..Celestial_Calculations.CelestialMath import pointLocationOnACelestialObject,getPointLatitundal
 

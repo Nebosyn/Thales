@@ -2,7 +2,7 @@ import bpy
 import os
 import datetime
 import spiceypy as sp
-from ..Constants.constants import scaleCoff,step
+from ..Constants.constants import scaleCoff,step, videoSpeed
 from ..Eclispe_Calculations.eclipseFinder import createEclipseShadowMapping
 from ..Celestial_Data.data import getCelestialObjectSpecs
 from ..Tools.tools import getFilePath,imagePathNamer
@@ -21,6 +21,9 @@ def StartVisualisation(eclipseWindow,penumbraRadius,eclipsedCities,imagesDirPath
     
     quantityOfFrames = int(((end_ephemerisTime-start_ephemerisTime)//step)+1)
     
+    moonSpecs = getCelestialObjectSpecs("MOON",start_ephemerisTime,scaleCoff)
+    earthSpecs = getCelestialObjectSpecs("EARTH",start_ephemerisTime,scaleCoff)
+    sunSpecs = getCelestialObjectSpecs("SUN",start_ephemerisTime,scaleCoff)
     moonSpecs = getCelestialObjectSpecs("MOON",start_ephemerisTime,scaleCoff)
     earthSpecs = getCelestialObjectSpecs("EARTH",start_ephemerisTime,scaleCoff)
     sunSpecs = getCelestialObjectSpecs("SUN",start_ephemerisTime,scaleCoff)
@@ -79,8 +82,6 @@ def createFrames(start_ephemerisTime:float,renderCamerasIdentificators:list,rend
     end_utc_time = str(sp.et2utc(frameRenderDate,"C",0).replace(":","-"))
     createSkybox()
     amountOfCameras = len(renderCamerasNames)
-    videoSpeedCoff = 0.0016778523489933
-    videoSpeed = quantityOfFrames * videoSpeedCoff
     amountOfAllFrames,timeToRenderFrames,timeToRenderVideos = renderData(amountOfCameras,quantityOfFrames,videoSpeed)
     allCamerasData = getAllCamerasData(renderCamerasIdentificators,earthSpecs,moonSpecs,sunSpecs,frameRenderDate)
     print("Done")
@@ -96,7 +97,7 @@ def renderData(amountOfCameras,amountOfFrames,videoSpeed):
     approximateTimeToAppendOneFrame = 0.10
     amountOfAllFrames = amountOfCameras*amountOfFrames
     timeToRenderFrames = str(datetime.timedelta(seconds = amountOfAllFrames*approximateTimeToRenderOneFrame))
-    timeToRenderVideos = str(datetime.timedelta(seconds = (amountOfAllFrames/videoSpeed)*approximateTimeToAppendOneFrame))
+    timeToRenderVideos = str(datetime.timedelta(seconds = (amountOfAllFrames/(videoSpeed/100))*approximateTimeToAppendOneFrame))
     return amountOfAllFrames,timeToRenderFrames,timeToRenderVideos
 
 def renderFrames(renderDateTime,quantityOfFrames,camerasData,imagesDirPath,step):

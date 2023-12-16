@@ -70,7 +70,7 @@ def configureVideoEditor(imagesDirPath,renderCamerasNames,videoSpeed):
             channel=channelCounter,
             frame_start=0,
             fit_method='ORIGINAL'
-        ) 
+        )
         bpy.context.scene.sequence_editor.channels[f"Channel {channelCounter}"].name = cameraName
         bpy.context.scene.sequence_editor.channels[cameraName].mute = True
         for image in restImages:
