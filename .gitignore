@@ -8,5 +8,12 @@
 /Project/Rendered Images
 /Thales.zip
 /Thales
-__pycache__/
-*.pyc
+Project/*.pyc
+Project/Modules/Tools/_pycache_
+Project/Modules/Scene_Visualisation/_pycache_
+Project/Modules/Eclipse_Calculations/_pycache_
+Project/Modules/Constants/_pycache_
+Project/Modules/Console_Menu/_pycache_
+Project/Modules/Cities_Data/_pycache_
+Project/Modules/Celestial_Data/_pycache_
+Project/Modules/Celestial_Calculations/_pycache_
