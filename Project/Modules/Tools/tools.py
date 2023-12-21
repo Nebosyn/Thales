@@ -54,7 +54,7 @@ def createEclipsesDictionary(eclipses_list):
 
 def loadEclipseCache(fileDirPath,fileName):
     with open(f"{os.path.join(fileDirPath,fileName)}","r") as f:
-        dicitonary =json.load(f)
+        dicitonary = json.load(f)
         return dicitonary
 
 def importKernels(kernelsRelativePath):

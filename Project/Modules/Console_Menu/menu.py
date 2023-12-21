@@ -4,7 +4,7 @@ import datetime
 from ..Eclispe_Calculations import eclipseFinder,City_EclipseChecker
 from ..Constants.constants import  scaleCoff,eclipsesCachePath
 from ..Tools.tools import inputControl, createEclipseCache, loadEclipseCache, createEclipsesDictionary
-def create_UI(eclipses_dictionary,eclipses_list):
+def create_UI(eclipses_dictionary):
     print("""
 1.All eclipses
 2.Eclipses by country
@@ -36,7 +36,7 @@ def create_UI(eclipses_dictionary,eclipses_list):
                 if userInput.lower() == "recalculate": 
                     try:
                         chosenCountry = chooseCountries(1)
-                        eclipses_dictionary = sortEclipsesByCountry(eclipses_list,chosenCountry)
+                        eclipses_dictionary = sortEclipsesByCountry(eclipses_dictionary,chosenCountry)
                         loop = False
                         break
                     except:
@@ -53,7 +53,10 @@ def create_UI(eclipses_dictionary,eclipses_list):
     elif programMode == 0:
         sys.exit("Exiting Thales")
 
-def sortEclipsesByCountry(eclipses_list,chosenCountry):
+def sortEclipsesByCountry(eclipses_dictionary,chosenCountry):
+    eclipses_list = [] 
+    for i in eclipses_dictionary.values():
+        eclipses_list += i 
     eclipses_list_certain_country = []
     for index, eclipse in enumerate(eclipses_list):
         print(f"{index} of {len(eclipses_list)} eclipses scanned")

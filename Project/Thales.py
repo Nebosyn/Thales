@@ -1,7 +1,7 @@
 import os,sys
 executionDirectory = os.getcwd()
 sys.path.append(executionDirectory)
-from Modules.Constants.constants import executionDirectory,kernelsRelativePath,eclipsesCachePath
+from Modules.Constants.constants import kernelsRelativePath,eclipsesCachePath
 import spiceypy as sp
 import time
 from Modules.Eclispe_Calculations.eclipseFinder import findEclipses2
@@ -13,19 +13,19 @@ from Modules.Scene_Visualisation import Visualisator
 def main():
     print(time.strftime("Current date: ""%D %H:%M:%S",time.localtime()))
     importKernels(kernelsRelativePath)
-    intro()
+    intro()   
     try:
-        eclipses_dictionary = loadEclipseCache(eclipsesCachePath,"All_Eclipses")    
+        eclipses_dictionary = loadEclipseCache(os.path.dirname(eclipsesCachePath),"All_Eclipses.json")    
     except:    
         eclipsesList = findEclipses2()
         eclipses_dictionary = createEclipsesDictionary(eclipsesList)
-    createEclipseCache("All_Eclipses",eclipses_dictionary,eclipsesCachePath)
+    createEclipseCache("All_Eclipses",eclipses_dictionary,os.path.dirname(eclipsesCachePath))
     imagesDirPath = os.path.join(executionDirectory,"Rendered Images")
     renderMode = 0
     while renderMode == 0:
-        eclipseWindow, penumbraRadius,eclipsedCities = menu.create_UI(eclipses_dictionary,eclipsesList)
+        eclipseWindow, penumbraRadius,eclipsedCities = menu.create_UI(eclipses_dictionary)
         while eclipseWindow == 0:
-            eclipseWindow, penumbraRadius,eclipsedCities = menu.create_UI(eclipses_dictionary,eclipsesList)
+            eclipseWindow, penumbraRadius,eclipsedCities = menu.create_UI(eclipses_dictionary)
         renderMode = menu.chooseRenderMode()
     Visualisator.StartVisualisation(eclipseWindow,penumbraRadius,eclipsedCities,imagesDirPath,renderMode)
     sp.kclear()
