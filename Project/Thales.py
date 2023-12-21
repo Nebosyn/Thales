@@ -15,11 +15,11 @@ def main():
     importKernels(kernelsRelativePath)
     intro()
     try:
-        eclipses_dictionary = loadEclipseCache(eclipsesCachePath,"All Eclipses")    
+        eclipses_dictionary = loadEclipseCache(eclipsesCachePath,"All_Eclipses")    
     except:    
         eclipsesList = findEclipses2()
         eclipses_dictionary = createEclipsesDictionary(eclipsesList)
-    createEclipseCache("All Eclipses",eclipses_dictionary,eclipsesCachePath)
+    createEclipseCache("All_Eclipses",eclipses_dictionary,eclipsesCachePath)
     imagesDirPath = os.path.join(executionDirectory,"Rendered Images")
     renderMode = 0
     while renderMode == 0:
