@@ -3,8 +3,8 @@ import spiceypy as sp
 import datetime
 from ..Eclispe_Calculations import eclipseFinder,City_EclipseChecker
 from ..Constants.constants import  scaleCoff,eclipsesCachePath
-from ..Tools.tools import inputControl, createEclipseCache, loadEclipseCache
-def create_UI(eclipses_list):
+from ..Tools.tools import inputControl, createEclipseCache, loadEclipseCache, createEclipsesDictionary
+def create_UI(eclipses_dictionary,eclipses_list):
     print("""
 1.All eclipses
 2.Eclipses by country
@@ -16,7 +16,6 @@ def create_UI(eclipses_list):
         if programMode != None:
             break
     if programMode == 1:
-        eclipses_dictionary = createEclipsesDictionary(eclipses_list)
         output = centuriesMenu(eclipses_dictionary)
         while output[1] == 0:
             output = centuriesMenu(eclipses_dictionary)
@@ -27,6 +26,9 @@ def create_UI(eclipses_list):
             sortedEclipsesFiles = os.listdir(eclipsesCachePath)
             for index,sortedEclipsesFile in enumerate(sortedEclipsesFiles):
                 countryName = sortedEclipsesFile.split(".")[0]
+                if countryName == "All Eclipses":
+                    index-=1
+                    continue
                 print(f"{index+1}. {countryName}")
             print("Available countries")
             while True:
@@ -64,17 +66,7 @@ def sortEclipsesByCountry(eclipses_list,chosenCountry):
     createEclipseCache(chosenCountry,eclipses_dictionary,eclipsesCachePath)
     return eclipses_dictionary
 
-def createEclipsesDictionary(eclipses_list):
-    eclipses_dictionary = {}
-    for eclipse in eclipses_list:
-        eclipsestrp_start = datetime.datetime.strptime(eclipse[0],"%Y %b %d %H:%M:%S")  
-        eclipsestrp_end = datetime.datetime.strptime(eclipse[1],"%Y %b %d %H:%M:%S")  
-        # print(eclipsestrp_start)
-        year_century = str(eclipsestrp_start.year)[:-2]
-        if year_century not in eclipses_dictionary.keys():
-            eclipses_dictionary[year_century] = []
-        eclipses_dictionary[year_century].append(eclipse)
-    return eclipses_dictionary
+
 
 def centuriesMenu(eclipses_dictionary):
     print("Select desired century:")

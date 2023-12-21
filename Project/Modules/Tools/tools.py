@@ -1,6 +1,7 @@
 import os,sys
 import spiceypy as sp
 import json
+import datetime
 def getFilePath(fileName):
     rootDirectory = os.getcwd()
     for relativePath,dirs,files in os.walk(rootDirectory):
@@ -38,6 +39,18 @@ def inputControl(userInput,maxuinputValue,listScanMode):
 def createEclipseCache(fileName,valueToWrite,pathToFile):
     with open(pathToFile+"\\"+fileName+".json","w") as f:
         json.dump(valueToWrite,f)
+
+def createEclipsesDictionary(eclipses_list):
+    eclipses_dictionary = {}
+    for eclipse in eclipses_list:
+        eclipsestrp_start = datetime.datetime.strptime(eclipse[0],"%Y %b %d %H:%M:%S")  
+        eclipsestrp_end = datetime.datetime.strptime(eclipse[1],"%Y %b %d %H:%M:%S")  
+        # print(eclipsestrp_start)
+        year_century = str(eclipsestrp_start.year)[:-2]
+        if year_century not in eclipses_dictionary.keys():
+            eclipses_dictionary[year_century] = []
+        eclipses_dictionary[year_century].append(eclipse)
+    return eclipses_dictionary
 
 def loadEclipseCache(fileDirPath,fileName):
     with open(f"{os.path.join(fileDirPath,fileName)}","r") as f:

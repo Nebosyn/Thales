@@ -166,3 +166,50 @@ def createEclipseShadowMapping(earthSpecs,moonSpecs,sunSpecs,penumbraRadius):
             penumbraRadius = City_EclipseChecker.calculatePenumbraRadius(moonSpecs,earthSpecs,sunSpecs)
         listOfIntersections,radiusDecrease = fullRayCast(earthSpecs,moonSpecs,sunSpecs,penumbraRadius,"Full")
         return listOfIntersections, radiusDecrease
+
+def findEclipses2():
+    start_time_utc = "1900 september 1 00:00:00"
+    end_time_utc = "2140 December 1 00:00:00"
+    # print("Start time: ",start_time_utc)
+    # print("End time: ",end_time_utc)
+    start_time = sp.str2et(start_time_utc)
+    end_time = sp.str2et(end_time_utc)
+    list_of_eclipses = []
+    while start_time<=end_time:
+        eclipse = recalculateEclipse2(start_time)
+        list_of_eclipses.append(eclipse)
+        start_time = sp.str2et(eclipse[1])
+    return list_of_eclipses
+
+
+def recalculateEclipse2(window_start_time):
+    print("Searching for eclipses...")
+    timeStep = [3600,1800,600,60,30,10,1]
+    start_time,penumbraRadius = eclipseRecalculationCycle2(window_start_time,timeStep,"+")
+    print(sp.et2utc(start_time,"C",0))
+    end_time = eclipseRecalculationCycle(start_time,timeStep,penumbraRadius,"+")
+    print(sp.et2utc(end_time,"C",0))
+    print("Done")
+    return (sp.et2utc(start_time,"C",0),sp.et2utc(end_time,"C",0))
+
+def eclipseRecalculationCycle2(eclipseBoundary,timeStep,typeOfRecalculation):
+    timeStepChooser = 0
+    timeToChange = eclipseBoundary
+    while timeStepChooser<=6:
+        if typeOfRecalculation == "+":
+            eclipseBoundary = (timeToChange + timeStep[timeStepChooser])
+        elif typeOfRecalculation == "-":
+            eclipseBoundary = (timeToChange - timeStep[timeStepChooser])
+        earthSpecs = getCelestialObjectSpecs("EARTH",eclipseBoundary,scaleCoff)
+        moonSpecs = getCelestialObjectSpecs("MOON",eclipseBoundary,scaleCoff)
+        sunSpecs = getCelestialObjectSpecs("SUN",eclipseBoundary,scaleCoff)
+        try:
+            penumbraRadius = City_EclipseChecker.calculatePenumbraRadius(moonSpecs,earthSpecs,sunSpecs)
+        except:
+            penumbraRadius = 3600
+        result = createEclipseRays(earthSpecs,moonSpecs,sunSpecs,penumbraRadius,"Instant")
+        if result == None:
+            timeToChange = eclipseBoundary
+        elif result != None:
+            timeStepChooser+=1
+    return eclipseBoundary, penumbraRadius
