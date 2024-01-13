@@ -1,5 +1,5 @@
 import os,sys
-from Modules.Constants.constants import blenderPythonPath,blenderPath,thalesPath
+from Modules.Constants.constants import blenderPath,thalesPath
 answer = input("Run blender in the background?(y/n): ").lower()
 if answer == "y":
     command = f"{blenderPath} --python  {thalesPath}"

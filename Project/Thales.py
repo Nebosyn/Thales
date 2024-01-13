@@ -13,13 +13,13 @@ from Modules.Scene_Visualisation import Visualisator
 def main():
     print(time.strftime("Current date: ""%D %H:%M:%S",time.localtime()))
     importKernels(kernelsRelativePath)
-    intro()   
+    intro()
     try:
         eclipses_dictionary = loadEclipseCache(os.path.dirname(eclipsesCachePath),"All_Eclipses.json")    
     except:    
         eclipsesList = findEclipses2()
         eclipses_dictionary = createEclipsesDictionary(eclipsesList)
-    createEclipseCache("All_Eclipses",eclipses_dictionary,os.path.dirname(eclipsesCachePath))
+        createEclipseCache("All_Eclipses",eclipses_dictionary,os.path.dirname(eclipsesCachePath))
     imagesDirPath = os.path.join(executionDirectory,"Rendered Images")
     renderMode = 0
     while renderMode == 0:
