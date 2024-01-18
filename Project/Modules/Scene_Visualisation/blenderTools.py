@@ -2,6 +2,7 @@ import bpy
 import os
 import spiceypy as sp
 from ..Celestial_Calculations.CelestialMath import  calculateObjectRotation
+import time
 def insertKeyframe(objectName,frame):
     bpy.context.scene.objects[objectName].keyframe_insert(data_path='location',frame=frame)
     bpy.context.scene.objects[objectName].keyframe_insert(data_path='rotation_euler',frame=frame)
@@ -51,7 +52,10 @@ def clean_scene():
 def renderImage(cameraName:str,saveFolderPath:str,fileName:str):
     bpy.context.scene.camera = bpy.data.objects[cameraName]
     bpy.context.scene.render.filepath = os.path.join(saveFolderPath,fileName+" "+cameraName)
-    bpy.ops.render.render(write_still = True)
+    start = time.time()
+    bpy.ops.render.opengl(write_still = True)
+    end = time.time()
+    print(f"Picture saved, wasted time: {start-end} seconds")
     
 def configureVideoEditor(imagesDirPath,renderCamerasNames,videoSpeed):
     bpy.context.scene.render.image_settings.file_format = 'FFMPEG'
