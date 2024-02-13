@@ -51,8 +51,8 @@ def fullRayCast(earthSpecs,moonSpecs,sunSpecs,penumbraRadius,typeOfCreation):
     pointsList = []
     radiusDecrease = 100/scaleCoff
     while penumbraRadius>0:
-        pointsList.append(createEclipseRays(earthSpecs,moonSpecs,sunSpecs,penumbraRadius,typeOfCreation))
         penumbraRadius -= radiusDecrease
+        pointsList.append(createEclipseRays(earthSpecs,moonSpecs,sunSpecs,penumbraRadius,typeOfCreation))
     return pointsList,radiusDecrease
 
 def createEclipseShadowMapping(earthSpecs,moonSpecs,sunSpecs,penumbraRadius):
@@ -120,6 +120,7 @@ def calculateRayIntersection(startOfRayPos:tuple,endOfRayPos,centerOfSphericalOb
         if programMode == 1:
             return rayIntersectionPos
         else: 
+            print(abs(x2-rayIntersectionPos[0]))
             if abs(x2-rayIntersectionPos[0]) > 10/scaleCoff:
                 return None
             else:

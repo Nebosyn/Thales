@@ -7,6 +7,7 @@ from ..Constants.constants import scaleCoff
 from ..Eclispe_Calculations import City_EclipseChecker
 from ..Celestial_Data.data import getCelestialObjectSpecs
 from ..Celestial_Calculations.CelestialMath import pointLocationOnACelestialObject,getPointLatitundal
+
 def findEclipses():
     maxwin = 20000
     maxivl = int(maxwin/2)
@@ -73,7 +74,7 @@ def getFilePath(fileName):
 
 
 def recalculateEclipse(eclipsewindow):
-    print("Recalculating eclipse...")
+    # print("Recalculating eclipse...")
     startOfEclipse = sp.str2et(eclipsewindow[0])
     endOfEclipse = sp.str2et(eclipsewindow[1])
     timeStep = [3600,1800,600,60,30,10,1]
@@ -85,7 +86,7 @@ def recalculateEclipse(eclipsewindow):
     penumbraRadius = City_EclipseChecker.calculatePenumbraRadius(moonSpecs,earthSpecs,sunSpecs)
     startOfEclipse = eclipseRecalculationCycle(startOfEclipse,timeStep,penumbraRadius,"-")
     endOfEclipse = eclipseRecalculationCycle(endOfEclipse,timeStep,penumbraRadius,"+")
-    print("Done")
+    # print("Done")
     return (sp.et2utc(startOfEclipse,"C",0),sp.et2utc(endOfEclipse,"C",0)), penumbraRadius
 
 def eclipseRecalculationCycle(eclipseBoundary,timeStep,penumbraRadius,typeOfRecalculation):

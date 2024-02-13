@@ -83,3 +83,12 @@ def imagePathNamer(time,imagesDirPath,cameraName):
     imageName = cameraName + " " + str(sp.et2utc(time,"C",0).replace(":","-"))
     imageSavePath = os.path.join(imagesDirPath,imageName)
     return imageSavePath,imageName
+
+def loading_bar(startValue, endValue, loadingBarLength):
+    os.system("cls")
+    result = int(abs(startValue/endValue*100)) # 90
+    loadingBarLength1 = 100//loadingBarLength # 18
+    progress = result // loadingBarLength1
+    a = "░"
+    b = "█"
+    print(b*progress, a*(loadingBarLength-progress),f" {result}%",sep="")

@@ -5,6 +5,7 @@ import os,sys
 from ..Constants.constants import scaleCoff,worldCitesDataPath
 from ..Celestial_Data.data import getCelestialObjectSpecs
 from ..Celestial_Calculations.CelestialMath import pointLocationOnACelestialObject,getPointLatitundal
+from ..Tools.tools import loading_bar
 
 def citiesEclipseCheck(window:tuple,scaleCoff:int,programMode:int,penumbraRadius:any,chosenCountries):
     print("Executing cities scan...")

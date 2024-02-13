@@ -4,7 +4,7 @@ sys.path.append(executionDirectory)
 from Modules.Constants.constants import kernelsRelativePath,eclipsesCachePath
 import spiceypy as sp
 import time
-from Modules.Eclispe_Calculations.eclipseFinder import findEclipses2
+from Modules.Eclispe_Calculations.FindEclipses import findEclipses
 from Modules.Tools.intro import intro
 from Modules.Tools.tools import importKernels,createEclipsesDictionary,createEclipseCache,loadEclipseCache
 from Modules.Console_Menu import menu
@@ -17,7 +17,9 @@ def main():
     try:
         eclipses_dictionary = loadEclipseCache(os.path.dirname(eclipsesCachePath),"All_Eclipses.json")    
     except:    
-        eclipsesList = findEclipses2()
+        print("Cannot find file 'All Eclipses Json', executing eclipses search.")
+        time.sleep(1)
+        eclipsesList = findEclipses()
         eclipses_dictionary = createEclipsesDictionary(eclipsesList)
         createEclipseCache("All_Eclipses",eclipses_dictionary,os.path.dirname(eclipsesCachePath))
     imagesDirPath = os.path.join(executionDirectory,"Rendered Images")

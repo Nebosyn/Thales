@@ -3,7 +3,7 @@ import spiceypy as sp
 import datetime
 from ..Eclispe_Calculations import eclipseFinder,City_EclipseChecker
 from ..Constants.constants import  scaleCoff,eclipsesCachePath
-from ..Tools.tools import inputControl, createEclipseCache, loadEclipseCache, createEclipsesDictionary
+from ..Tools.tools import inputControl, createEclipseCache, loadEclipseCache, createEclipsesDictionary, loading_bar
 def create_UI(eclipses_dictionary):
     print("""
 1.All eclipses
@@ -54,11 +54,13 @@ def create_UI(eclipses_dictionary):
         sys.exit("Exiting Thales")
 
 def sortEclipsesByCountry(eclipses_dictionary,chosenCountry):
+    
     eclipses_list = [] 
     for i in eclipses_dictionary.values():
         eclipses_list += i 
     eclipses_list_certain_country = []
     for index, eclipse in enumerate(eclipses_list):
+        loading_bar(index, len(eclipses_list),20)
         print(f"{index} of {len(eclipses_list)} eclipses scanned")
         recalculated_eclipse, penumbraRadius = eclipseFinder.recalculateEclipse(eclipse)
         if City_EclipseChecker.citiesEclipseCheck(recalculated_eclipse,scaleCoff,4,penumbraRadius,chosenCountry) == True:
@@ -164,7 +166,7 @@ def chooseCameras(eclipsedCities):
     renderCamerasIdentificators = []
     eclipsedCities = sorted(eclipsedCities, key= lambda x: x[0])
     defaultCameras = [("MOON","EARTH"),("SUN","EARTH")]
-
+    
     [print(f"{index+1}. {cameraData[0]}--SUN") for index,cameraData in enumerate(eclipsedCities)]
     print("Cameras in space\n")
     [print(f"{len(eclipsedCities)+index+1}. {cameraData[0]}--{cameraData[1]}") for index,cameraData in enumerate(defaultCameras)]

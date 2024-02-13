@@ -4,7 +4,7 @@
  'earth_000101_231116_230823.bpc',
  'pck00011.tpc',
  'naif0012.tls',
- 'de440s.bsp',
+ 'de440.bsp',
  'gm_de431.tpc'
  ) 
 \begintext

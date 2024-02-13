@@ -5,7 +5,7 @@ import spiceypy as sp
 from ..Constants.constants import scaleCoff,step, videoSpeed
 from ..Eclispe_Calculations.eclipseFinder import createEclipseShadowMapping
 from ..Celestial_Data.data import getCelestialObjectSpecs
-from ..Tools.tools import getFilePath,imagePathNamer
+from ..Tools.tools import getFilePath,imagePathNamer,loading_bar
 from ..Console_Menu.menu import chooseCameras
 from .blenderTools import *
 from .CameraManipulate import *
@@ -61,6 +61,7 @@ def createFrames(start_ephemerisTime:float,renderCamerasIdentificators:list,rend
     frameRenderDate = start_ephemerisTime
     scene.render.image_settings.file_format = 'PNG' 
     for frame in range(quantityOfFrames):
+        loading_bar(frame,quantityOfFrames,20)
         moonSpecs = getCelestialObjectSpecs("MOON",frameRenderDate,scaleCoff)
         earthSpecs = getCelestialObjectSpecs("EARTH",frameRenderDate,scaleCoff)
         # print("x ",cityPosition[0]-earthSpecs[0][0])
@@ -90,8 +91,6 @@ def createFrames(start_ephemerisTime:float,renderCamerasIdentificators:list,rend
         renderFrames(start_ephemerisTime,quantityOfFrames,allCamerasData,imagesDirPath,step)
     return imagesDirPath,end_utc_time,timeToRenderVideos,videoSpeed
 
-
-
 def renderData(amountOfCameras,amountOfFrames,videoSpeed):
     approximateTimeToRenderOneFrame = 0.25
     approximateTimeToAppendOneFrame = 0.10
@@ -107,6 +106,7 @@ def renderFrames(renderDateTime,quantityOfFrames,camerasData,imagesDirPath,step)
             cameraName = cameraData[2]
             shadowMap = bpy.data.objects.get(f'EclipseShadowMap{frame}')
             if shadowMap != None and cameraName == "MOON--EARTH":
+                loading_bar(frame,quantityOfFrames,20)
                 parentIcosphere(frame)
             renderFrame(renderDateTime,imagesDirPath,cameraData)
         renderDateTime += step
