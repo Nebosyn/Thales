@@ -11,3 +11,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+/Modules/Test_stuff
+Launch_Thales.spec
+build
+dist
