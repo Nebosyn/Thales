@@ -47,6 +47,8 @@ def createEclipsesDictionary(eclipses_list):
         eclipsestrp_end = datetime.datetime.strptime(eclipse[1],"%Y %b %d %H:%M:%S")  
         # print(eclipsestrp_start)
         year_century = str(eclipsestrp_start.year)[:-2]
+        if str(eclipsestrp_start.year)[-1] == "0":
+            year_century = str(int(year_century)-1)
         if year_century not in eclipses_dictionary.keys():
             eclipses_dictionary[year_century] = []
         eclipses_dictionary[year_century].append(eclipse)

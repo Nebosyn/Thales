@@ -2,7 +2,7 @@ from ..Constants.constants import scaleCoff
 from ..Celestial_Calculations.CelestialMath import pointLocationOnACelestialObject,getPointLatitundal
 import math
 
-def createEclipseRays(earthSpecs,moonSpecs,sunSpecs,penumbraRadius,typeOfCreation):
+def createEclipseRays(earthSpecs,moonSpecs,sunSpecs,penumbraRadius,typeOfCreation,numberOfRays):
     earthPos = earthSpecs[0]
     earthRadius = earthSpecs[1]/2
     moonPos = moonSpecs[0]
@@ -19,7 +19,6 @@ def createEclipseRays(earthSpecs,moonSpecs,sunSpecs,penumbraRadius,typeOfCreatio
     sunY = sunPos[1]
     sunZ = sunPos[2]
     sun_moonDistance = math.sqrt((moonX-sunX)**2+(moonY-sunY)**2+(moonZ-sunZ)**2)
-    numberOfRays = 360
     anglesBetweenSunAndMoon = getPointLatitundal(sunPos,moonPos)
     xangleSunMoon = anglesBetweenSunAndMoon[0]
     yangleSunMoon = anglesBetweenSunAndMoon[1]
@@ -52,7 +51,7 @@ def fullRayCast(earthSpecs,moonSpecs,sunSpecs,penumbraRadius,typeOfCreation):
     radiusDecrease = 100/scaleCoff
     while penumbraRadius>0:
         penumbraRadius -= radiusDecrease
-        pointsList.append(createEclipseRays(earthSpecs,moonSpecs,sunSpecs,penumbraRadius,typeOfCreation))
+        pointsList.append(createEclipseRays(earthSpecs,moonSpecs,sunSpecs,penumbraRadius,typeOfCreation,360))
     return pointsList,radiusDecrease
 
 def createEclipseShadowMapping(earthSpecs,moonSpecs,sunSpecs,penumbraRadius):
